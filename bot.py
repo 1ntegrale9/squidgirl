@@ -24,7 +24,6 @@ async def on_message(message):
         if message.author == client.user:
             return
         else:
-            await logging(client, message)
             if message.content == '/raise':
                 raise Exception
             if str(client.user.id) in message.content:
@@ -50,12 +49,6 @@ async def on_message(message):
         ch_error = client.get_channel(502906713545113642)
         await message.channel.send(str(e) + '\nっていうエラーが出たよ')
         await ch_error.send(f'```\n{traceback.format_exc()}\n```')
-
-
-async def logging(client, message):
-    ch_log = client.get_channel(525940371042205706)
-    msg = 'Message from {0.author}: {0.content}'.format(message)
-    await ch_log.send(msg)
 
 
 async def sleep(client, message):
