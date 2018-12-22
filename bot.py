@@ -30,14 +30,12 @@ async def on_message(message):
                 if anyIn(message.content, ['ふとん, 布団']):
                     msg = await sleep(client, message)
                 elif anyIn(message.content, ['黒歴史']):
-                    async for log in message.channel.history:
-                        if log.author == message.author:
-                            await log.delete()
+                    logs = [log async for log in message.channel.history() if log.author == message.author]
+                    await message.channel.delete_messages(logs)
                     msg = 'は何も言ってない、いいね？'
                 elif anyIn(message.content, ['バルス']):
-                    async for log in message.channel.history:
-                        if log.author.bot:
-                            await log.delete()
+                    logs = [log async for log in message.channel.history() if log.author.bot]
+                    await message.channel.delete_messages(logs)
                     msg = 'botなんていなかった！'
                 elif message.content.startswith(f'<@{client.user.id}>'):
                     msg = await knowledge(client, message)
