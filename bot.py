@@ -27,7 +27,7 @@ async def on_message(message):
             if message.content == '/raise':
                 raise Exception
             if str(client.user.id) in message.content:
-                if anyIn(message.content, ['ふとん, 布団']):
+                if anyIn(message.content, ['ふとん', '布団']):
                     msg = await sleep(client, message)
                 elif anyIn(message.content, ['黒歴史']):
                     logs = [log async for log in message.channel.history() if log.author == message.author]
@@ -50,21 +50,18 @@ async def on_message(message):
 
 
 async def sleep(client, message):
-    compatible_channel = [
-        c for c in message.guild.channels
-        if message.channel.name.upper() in c.name]
-    if compatible_channel:
-        compatible_channel = compatible_channel[0]
-        channel_voice_members = discord.utils.get(
-            message.guild.channels,
-            name=compatible_channel.name,
-            type=discord.ChannelType.voice
-        ).voice_members
-        for member in channel_voice_members:
-            await member.move_to(message.guild.afk_channel)
-        return 'おやすみなさい、良い夢を'
-    else:
-        return 'ボイスチャンネルが見つからないよ！'
+    afk = message.guild.afk_channel
+    vc = message.author.voice.channel
+    if not afk:
+        return 'おふとんはどこ？'
+    if not vc:
+        return 'ボイスチャンネルに入ってね！'
+    mentions = ''
+    for member in vc.members:
+        await member.move_to(afk)
+        if member != message.author:
+            mentions = mentions + member.mention + ' '
+    return f'{mentions}\nおやすみなさい！'
 
 
 async def knowledge(client, message):
