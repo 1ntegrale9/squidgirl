@@ -9,7 +9,7 @@ from utils import anyIn
 client = discord.Client()
 r = redis.from_url(os.environ['REDIS_URL'])
 
-squidgirl_reply = getDescriptions('squidgirl', 'reply')
+splatoon_illust = getDescriptions('squidgirl', 'illust')
 
 
 @client.event
@@ -56,7 +56,7 @@ async def on_message(message):
                     await message.channel.delete_messages(logs)
                     msg = 'botなんていなかった！'
                 else:
-                    msg = random.choice(squidgirl_reply)
+                    msg = f'オススメのイラストだよ！\n{random.choice(splatoon_illust)}'
                 mention = str(message.author.mention) + ' '
                 await message.channel.send(mention + msg)
     except Exception as e:
