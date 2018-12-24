@@ -34,7 +34,7 @@ async def on_message(message):
                         return f'{args[2]} は {r.get(key).decode()} だよ！'
                     else:
                         return 'それは知らないよ！'
-                elif len(args) == 4  str(client.user.id) in args[0] and args[1] == '覚えて':
+                elif len(args) == 4 and str(client.user.id) in args[0] and args[1] == '覚えて':
                     key = f'{message.guild.id}:{args[2]}'
                     r.set(key, args[3])
                     r.sadd(str(message.guild.id), args[2])
