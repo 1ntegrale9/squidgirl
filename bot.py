@@ -15,7 +15,7 @@ squidgirl_reply = getDescriptions('squidgirl', 'reply')
 @client.event
 async def on_ready():
     ch_login = client.get_channel(502906433914798093)
-    await ch_login.send('ログインしました')
+    await ch_login.send('おはよう！')
 
 
 @client.event
