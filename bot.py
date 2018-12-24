@@ -27,7 +27,19 @@ async def on_message(message):
             if message.content == '/raise':
                 raise Exception
             if str(client.user.id) in message.content:
-                if anyIn(message.content, ['ふとん', '布団']):
+                args = message.content.split()
+                if len(args) == 3 and str(client.user.id) in args[0] and args[1] == '教えて':
+                    key = f'{message.guild.id}:{args[2]}'
+                    if r.exists(key):
+                        return f'{args[2]} は {r.get(key).decode()} だよ！'
+                    else:
+                        return 'それは知らないよ！'
+                elif len(args) == 4  str(client.user.id) in args[0] and args[1] == '覚えて':
+                    key = f'{message.guild.id}:{args[2]}'
+                    r.set(key, args[3])
+                    r.sadd(str(message.guild.id), args[2])
+                    return f'{args[2]} は {args[3]}、覚えた！'
+                elif anyIn(message.content, ['ふとん', '布団']):
                     msg = await sleep(client, message)
                 elif anyIn(message.content, ['黒歴史']):
                     logs = [log async for log in message.channel.history() if log.author == message.author]
@@ -62,23 +74,6 @@ async def sleep(client, message):
         if member != message.author:
             mentions = mentions + member.mention + ' '
     return f'{mentions}\nおやすみなさい！'
-
-
-async def knowledge(client, message):
-    args = message.content.split()
-    if len(args) == 3 and args[1] == '教えて':
-        key = f'{message.guild.id}:{args[2]}'
-        if r.exists(key):
-            return f'{args[2]} は {r.get(key).decode()} だよ！'
-        else:
-            return '？'
-    elif len(args) == 4 and args[1] == '覚えて':
-        key = f'{message.guild.id}:{args[2]}'
-        r.set(key, args[3])
-        r.sadd(str(message.guild.id), args[2])
-        return f'{args[2]} は {args[3]}、覚えた！'
-    else:
-        return random.choice(squidgirl_reply)
 
 
 client.run(os.environ['DISCORD_BOT_TOKEN'])
