@@ -49,8 +49,6 @@ async def on_message(message):
                     logs = [log async for log in message.channel.history() if log.author.bot]
                     await message.channel.delete_messages(logs)
                     msg = 'botなんていなかった！'
-                elif message.content.startswith(f'<@{client.user.id}>'):
-                    msg = await knowledge(client, message)
                 else:
                     msg = random.choice(squidgirl_reply)
                 mention = str(message.author.mention) + ' '
