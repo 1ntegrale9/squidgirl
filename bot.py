@@ -11,6 +11,7 @@ r = redis.from_url(os.environ['REDIS_URL'])
 
 squidgirl_reply = getDescriptions('squidgirl', 'reply')
 splatoon_illust = getDescriptions('squidgirl', 'illust')
+splatoon_clip = getDescriptions('squidgirl', 'clip')
 
 
 @client.event
@@ -58,6 +59,8 @@ async def on_message(message):
                     msg = 'botなんていなかった！'
                 elif anyIn(message.content, ['イラストガチャ']):
                     msg = f'オススメのイラストだよ！\n{random.choice(splatoon_illust)}'
+                elif anyIn(message.content, ['クリップガチャ']):
+                    msg = f'オススメのクリップだよ！\n{random.choice(splatoon_clip)}'
                 else:
                     msg = random.choice(squidgirl_reply)
                 mention = str(message.author.mention) + ' '
