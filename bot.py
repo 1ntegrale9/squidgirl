@@ -9,10 +9,6 @@ from utils import anyIn
 client = discord.Client()
 r = redis.from_url(os.environ['REDIS_URL'])
 
-squidgirl_reply = getDescriptions('squidgirl', 'reply')
-splatoon_illust = getDescriptions('squidgirl', 'illust')
-splatoon_clip = getDescriptions('squidgirl', 'clip')
-
 
 @client.event
 async def on_ready():
@@ -58,11 +54,13 @@ async def on_message(message):
                     await message.channel.delete_messages(logs)
                     msg = 'botなんていなかった！'
                 elif anyIn(message.content, ['イラストガチャ']):
-                    msg = f'オススメのイラストだよ！\n{random.choice(splatoon_illust)}'
+                    illust = random.choice(getDescriptions('squidgirl', 'illust'))
+                    msg = f'オススメのイラストだよ！\n{illust}'
                 elif anyIn(message.content, ['クリップガチャ']):
-                    msg = f'オススメのクリップだよ！\n{random.choice(splatoon_clip)}'
+                    clip = random.choice(getDescriptions('squidgirl', 'clip'))
+                    msg = f'オススメのクリップだよ！\n{clip}'
                 else:
-                    msg = random.choice(squidgirl_reply)
+                    msg = random.choice(getDescriptions('squidgirl', 'reply'))
                 mention = str(message.author.mention) + ' '
                 await message.channel.send(mention + msg)
     except Exception as e:
