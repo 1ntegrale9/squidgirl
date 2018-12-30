@@ -94,4 +94,9 @@ async def sleep(client, message):
     return f'{mentions}\nおやすみなさい！'
 
 
-client.run(os.environ['DISCORD_BOT_TOKEN'])
+def job():
+    client.run(os.environ['DISCORD_BOT_TOKEN'])
+
+
+if __name__ == '__main__':
+    job()
