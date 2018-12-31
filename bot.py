@@ -59,6 +59,9 @@ async def on_message(message):
                 elif anyIn(message.content, ['クリップガチャ']):
                     clip = random.choice(getDescriptions('squidgirl', 'clip'))
                     msg = f'オススメのクリップだよ！\n{clip}'
+                elif anyIn(message.content, ['おみくじ']):
+                    omikuji = random.choice(getDescriptions('squidgirl', 'omikuji'))
+                    msg = f'あなたの今年の運勢は 【{omikuji}】だよ！'
                 else:
                     msg = random.choice(getDescriptions('squidgirl', 'reply'))
                 mention = str(message.author.mention) + ' '
