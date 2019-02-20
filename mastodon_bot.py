@@ -2,7 +2,6 @@ import os
 import random
 from mastodon import Mastodon
 from mastodon import StreamListener
-from threading import Thread
 from scrapbox_client import getDescriptions
 
 
