@@ -76,10 +76,15 @@ async def on_member_update(before, after):
     if before.id == 358698798266056707:  # クマサン商会
         target_channel = client.get_channel(431454757626970113)  # リンジカテゴリ
         target_role = client.get_server(421485150984208386).default_role  # イカトドンのeveryone
-        if str(before.status) != 'offline' and str(after.status) == 'offline':
-            await target_channel.set_permissions(target_role, read_messages=True)
-        elif str(before.status) != 'online' and str(after.status) == 'online':
-            await target_channel.set_permissions(target_role, read_messages=False)
+        after_status = str(after.status)
+        if after_status == 'offline':
+            flag = True
+        elif after_status == 'online':
+            flag = False
+        else:
+            flag = None
+        if flag:
+            await target_channel.set_permissions(target_role, read_messages=flag)
 
 
 async def sleep(client, message):
