@@ -78,13 +78,9 @@ async def on_member_update(before, after):
         target_role = client.get_server(421485150984208386).default_role  # イカトドンのeveryone
         after_status = str(after.status)
         if after_status == 'offline':
-            flag = True
+            await target_channel.set_permissions(target_role, read_messages=True)
         elif after_status == 'online':
-            flag = False
-        else:
-            flag = None
-        if flag:
-            await target_channel.set_permissions(target_role, read_messages=flag)
+            await target_channel.set_permissions(target_role, read_messages=False)
 
 
 async def sleep(client, message):
