@@ -76,10 +76,9 @@ async def on_member_update(before, after):
     if before.id == 358698798266056707:  # クマサン商会
         target_channel = client.get_channel(431454757626970113)  # リンジカテゴリ
         target_role = client.get_server(421485150984208386).default_role  # イカトドンのeveryone
-        after_status = str(after.status)
-        if after_status == 'offline':
+        if after.status is discord.Status.offline:
             await target_channel.set_permissions(target_role, read_messages=True)
-        elif after_status == 'online':
+        elif after.status is discord.Status.online:
             await target_channel.set_permissions(target_role, read_messages=False)
 
 
