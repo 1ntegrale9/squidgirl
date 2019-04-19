@@ -21,45 +21,49 @@ async def on_message(message):
     try:
         if message.author.bot:
             return
-        if message.content == '/raise':
-            raise Exception
-        if str(client.user.id) in message.content:
-            args = message.content.split()
-            if len(args) == 3 and str(client.user.id) in args[0] and args[1] == '教えて':
-                key = f'{message.guild.id}:{args[2]}'
-                if r.exists(key):
-                    msg = f'{args[2]} は {list(r.smembers(key))[0].decode()} だよ！'
-                else:
-                    msg = 'それは知らないよ！'
-            elif len(args) == 4 and str(client.user.id) in args[0] and args[1] == '覚えて':
-                key = f'{message.guild.id}:{args[2]}'
-                if r.exists(key):
-                    old = list(r.smembers(key))[0].decode()
-                    r.sadd(key, args[3])
-                    r.sadd(str(message.guild.id), args[2])
-                    msg = f'{args[2]} は {old} じゃなかったっけ？\n{args[3]} で覚え直したよ！'
-                else:
-                    r.sadd(key, args[3])
-                    r.sadd(str(message.guild.id), args[2])
-                    msg = f'{args[2]} は {args[3]}、覚えた！'
-            elif anyIn(message.content, ['ふとん', '布団']):
-                msg = await sleep(client, message)
-            elif anyIn(message.content, ['黒歴史']):
-                logs = [log async for log in message.channel.history() if log.author == message.author]
-                await message.channel.delete_messages(logs)
-                msg = 'は何も言ってない、いいね？'
-            elif anyIn(message.content, ['バルス']):
-                logs = [log async for log in message.channel.history() if log.author.bot]
-                await message.channel.delete_messages(logs)
-                msg = 'botなんていなかった！'
-            else:
-                msg = random.choice(getDescriptions('squidgirl', 'reply'))
-            mention = str(message.author.mention) + ' '
-            await message.channel.send(mention + msg)
+        await parse_message(message)
     except Exception as e:
         ch_error = client.get_channel(502906713545113642)
         await message.channel.send(str(e) + '\nっていうエラーが出たよ')
         await ch_error.send(f'```\n{traceback.format_exc()}\n```')
+
+
+async def parse_message(message):
+    if message.content == '/raise':
+        raise Exception
+    if str(client.user.id) in message.content:
+        args = message.content.split()
+        if len(args) == 3 and str(client.user.id) in args[0] and args[1] == '教えて':
+            key = f'{message.guild.id}:{args[2]}'
+            if r.exists(key):
+                msg = f'{args[2]} は {list(r.smembers(key))[0].decode()} だよ！'
+            else:
+                msg = 'それは知らないよ！'
+        elif len(args) == 4 and str(client.user.id) in args[0] and args[1] == '覚えて':
+            key = f'{message.guild.id}:{args[2]}'
+            if r.exists(key):
+                old = list(r.smembers(key))[0].decode()
+                r.sadd(key, args[3])
+                r.sadd(str(message.guild.id), args[2])
+                msg = f'{args[2]} は {old} じゃなかったっけ？\n{args[3]} で覚え直したよ！'
+            else:
+                r.sadd(key, args[3])
+                r.sadd(str(message.guild.id), args[2])
+                msg = f'{args[2]} は {args[3]}、覚えた！'
+        elif anyIn(message.content, ['ふとん', '布団']):
+            msg = await sleep(client, message)
+        elif anyIn(message.content, ['黒歴史']):
+            logs = [log async for log in message.channel.history() if log.author == message.author]
+            await message.channel.delete_messages(logs)
+            msg = 'は何も言ってない、いいね？'
+        elif anyIn(message.content, ['バルス']):
+            logs = [log async for log in message.channel.history() if log.author.bot]
+            await message.channel.delete_messages(logs)
+            msg = 'botなんていなかった！'
+        else:
+            msg = random.choice(getDescriptions('squidgirl', 'reply'))
+        mention = str(message.author.mention) + ' '
+        await message.channel.send(mention + msg)
 
 
 async def on_member_update(before, after):
