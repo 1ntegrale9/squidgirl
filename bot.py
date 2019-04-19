@@ -74,8 +74,8 @@ async def parse_message(message):
 
 async def on_member_update(before, after):
     if before.id == ID_USER_KUMASAN:
-        target_channel = client.get_channel(ID_CATEGORY_EMERGENCY)  # リンジカテゴリ
-        target_role = client.get_guild(ID_GUILD_IKATODON).default_role  # イカトドンのeveryone
+        target_channel = client.get_channel(ID_CATEGORY_EMERGENCY)
+        target_role = client.get_guild(ID_GUILD_IKATODON).default_role
         if after.status is discord.Status.offline:
             await target_channel.set_permissions(target_role, read_messages=True)
         elif after.status is discord.Status.online:
