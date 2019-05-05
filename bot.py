@@ -40,6 +40,7 @@ async def parse_message(message):
     if message.content == ('/voice'):
         voice = await client.get_channel(574595949603848212).connect()
         voice.play(discord.FFmpegPCMAudio('test.wav'))
+        await voice.disconnect()
     if str(client.user.id) in message.content:
         args = message.content.split()
         if len(args) == 3 and str(client.user.id) in args[0] and args[1] == '教えて':
