@@ -1,3 +1,2 @@
-discordbot: python discordbot.py
-mastodonbot: python mastodonbot.py
-
+discordbot: python src/discordbot.py
+mastodonbot: python src/mastodonbot.py
