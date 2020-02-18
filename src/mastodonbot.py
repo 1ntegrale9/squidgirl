@@ -1,30 +1,36 @@
 import os
-import random
+import datetime
+from discord.ext import tasks, commands
 from mastodon import Mastodon
-from mastodon import StreamListener
-from scrapbox_client import getDescriptions
+
+bot = commands.Bot(command_prefix='!')
+isNoticed = False
+fedibird = Mastodon(
+    access_token=os.getenv('MASTODON_TOKEN'),
+    api_base_url='https://fedibird.com',
+)
 
 
-class StreamClient(StreamListener):
-    def __init__(self, client):
-        self.client = client
-        super().__init__()
-
-    def on_notification(self, notification):
-        if notification['type'] == 'mention':
-            id = notification['account']['username']
-            msg = random.choice(getDescriptions('squidgirl', 'reply'))
-            status = f'@{id} {msg}'
-            self.client.status_post(status, in_reply_to_id=notification['status'], visibility='unlisted')
-
-
-def job():
-    client = Mastodon(
-        access_token=os.environ['MASTODON_TOKEN'],
-        api_base_url='ika.queloud.net',
+@tasks.loop(seconds=60)
+async def today_private_match():
+    global isNoticed
+    if isNoticed or (20 != datetime.datetime.now().hour):
+        return
+    mentions = ' '.join([f'@{follower.acct}' for follower in fedibird.account_followers(77150)])
+    poll = fedibird.make_poll(
+        options=['21時から参加可能', '22時から参加可能', '23時から参加可能', '行けたら行く'],
+        expires_in=10000
     )
-    client.stream_user(StreamClient(client))
+    fedibird.status_post(
+        status=f'{mentions} #今日のプラベ 如何ですか？',
+        poll=poll
+    )
+    isNoticed = True
 
 
-if __name__ == '__main__':
-    job()
+@today_private_match.before_loop
+async def before_loop():
+    await bot.wait_until_ready()
+
+
+today_private_match.start()
