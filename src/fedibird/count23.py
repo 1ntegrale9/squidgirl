@@ -14,4 +14,7 @@ statuses = sorted(
 status_poll = [status['poll'] for status in statuses if status['poll'] is not None][0]
 votes = [poll['votes_count'] for poll in status_poll['options'] if poll['title'] == '23時から参加可能'][0]
 
-fedibird.toot(f'23時から{votes}人が参加できるらしいよ！ #今日のプラベ')
+fedibird.status_reply(
+    to_status=status_poll,
+    status=f'23時から{votes}人が参加できるらしいよ！ #今日のプラベ'
+)

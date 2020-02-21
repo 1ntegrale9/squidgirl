@@ -12,5 +12,6 @@ poll = fedibird.make_poll(
 )
 fedibird.status_post(
     status=f'{mentions}\n #今日のプラベ 如何ですか？',
-    poll=poll
+    poll=poll,
+    visibility='private',
 )
