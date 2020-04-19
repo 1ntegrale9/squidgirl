@@ -30,14 +30,6 @@ async def on_message(message):
 
 
 async def parse_message(message):
-    if message.content == '/raise':
-        raise Exception
-    if message.content == '/connect':
-        await bot.get_channel(574595949603848212).connect()
-    if message.content == '/play':
-        bot.voice_clients[0].play(discord.FFmpegPCMAudio('test.wav'))
-    if message.content == '/disconnect':
-        await bot.voice_clients[0].disconnect()
     if str(bot.user.id) in message.content:
         args = message.content.split()
         if len(args) == 3 and str(bot.user.id) in args[0] and args[1] == '教えて':
