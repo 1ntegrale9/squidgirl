@@ -5,6 +5,7 @@ import redis
 import random
 from utils import anyIn
 from discord.ext import commands
+from datetime import datetime
 
 bot = commands.Bot(command_prefix=('<@462797520007987201> $', '<@!462797520007987201> $'))
 r = redis.from_url(os.environ['REDIS_URL'])
@@ -17,6 +18,9 @@ ID_USER_KUMASAN = 358698798266056707
 
 splatoon_wiki = 'https://mntone.minibird.jp/splw/%E3%83%A1%E3%82%A4%E3%83%B3%E3%83%9A%E3%83%BC%E3%82%B8'
 
+@bot.event
+async def on_ready():
+    await bot.get_channel(ID_CHANNEL_LOGIN).send(str(datetime.now()))
 
 @bot.event
 async def on_message(message):
