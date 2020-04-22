@@ -30,6 +30,8 @@ async def on_message(message):
 
 
 async def parse_message(message):
+    if message.channel.id == ID_CATEGORY_EMERGENCY:
+        await emergency(message)
     if str(bot.user.id) not in message.content:
         return
     args = message.content.split()
@@ -47,6 +49,22 @@ async def parse_message(message):
         return await message.channel.send(f'{message.author.mention} botなんていなかった！')
     msg = random.choice(getDescriptions('squidgirl', 'reply'))
     await message.channel.send(f'{message.author.mention} + {msg}')
+
+
+async def emergency(message):
+    if message.content[0] in ('「', '['):
+        await rename(message.content)
+
+
+async def rename(message):
+    vc = message.author.voice.channel
+    if not vc:
+        return await message.channel.send(f'{message.author.mention} ボイスチャンネルに入ってね！')
+    oldname = vc.name
+    newname = message.content[1:]
+    await vc.edit(name=newname)
+    await message.channel.edit(name=newname)
+    await message.channel.send(f'チャンネル名を {oldname} から {newname} に変更したよ！')
 
 
 async def database(message, args):
