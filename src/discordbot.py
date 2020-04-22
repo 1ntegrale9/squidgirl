@@ -42,7 +42,7 @@ async def parse_message(message):
     if anyIn(message.content, ['黒歴史']):
         logs = [log async for log in message.channel.history() if log.author == message.author]
         await message.channel.delete_messages(logs)
-        return await message.channel.send(f'{message.author.mention} + は何も言ってない、いいね？')
+        return await message.channel.send(f'{message.author.mention} は何も言ってない、いいね？')
     if anyIn(message.content, ['バルス']):
         logs = [log async for log in message.channel.history() if log.author.bot]
         await message.channel.delete_messages(logs)
