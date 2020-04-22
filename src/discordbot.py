@@ -30,7 +30,7 @@ async def on_message(message):
 
 
 async def parse_message(message):
-    if message.channel.id == ID_CATEGORY_EMERGENCY:
+    if message.channel.category_id == ID_CATEGORY_EMERGENCY:
         await emergency(message)
     if str(bot.user.id) not in message.content:
         return
