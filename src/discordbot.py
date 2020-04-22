@@ -53,7 +53,7 @@ async def parse_message(message):
 
 async def emergency(message):
     if message.content[0] in ('「', '['):
-        await rename(message.content)
+        await rename(message)
 
 
 async def rename(message):
