@@ -27,9 +27,8 @@ async def on_message(message):
     try:
         if message.author.bot:
             return
-        if message.guild.id != ID_GUILD_IKATODON:
-            return
         await parse_message(message)
+        await bot.process_commands(message)
     except Exception as e:
         ch_error = bot.get_channel(ID_CHANNEL_ERROR)
         await message.channel.send(str(e) + '\nっていうエラーが出たよ')
@@ -37,6 +36,8 @@ async def on_message(message):
 
 
 async def parse_message(message):
+    if message.guild.id != ID_GUILD_IKATODON:
+        return
     if message.channel.category_id == ID_CATEGORY_EMERGENCY:
         await emergency(message)
     if str(bot.user.id) not in message.content:
