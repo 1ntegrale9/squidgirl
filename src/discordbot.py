@@ -8,7 +8,7 @@ from utils import anyIn
 from discord.ext import commands
 
 id = 462797520007987201
-bot = commands.Bot(command_prefix=(f'<@{id}> ', f'<@!{id}> '))
+bot = commands.Bot(command_prefix=(f'<@{id} /> $', f'<@!{id}> $'))
 r = redis.from_url(os.environ['REDIS_URL'])
 
 ID_GUILD_IKATODON = 421485150984208386
