@@ -9,6 +9,7 @@ redis = "*"
 pytest-flake8 = "*"
 mastodon-py = "*"
 discord-py = {extras = ["voice"],version = "*"}
+jishaku = "*"
 
 [dev-packages]
 

@@ -7,7 +7,8 @@ from scrapbox_client import getDescriptions
 from utils import anyIn
 from discord.ext import commands
 
-bot = commands.Bot(command_prefix='!')
+id = 462797520007987201
+bot = commands.Bot(command_prefix=(f'<@{id}> ', f'<@!{id}> '))
 r = redis.from_url(os.environ['REDIS_URL'])
 
 ID_GUILD_IKATODON = 421485150984208386
@@ -116,4 +117,5 @@ async def sleep(client, message):
     await message.channel.send('おやすみなさい！')
 
 
+bot.load_extension('jishaku')
 bot.run(os.environ['DISCORD_BOT_TOKEN'])
