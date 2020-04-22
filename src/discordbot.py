@@ -3,7 +3,6 @@ import os
 import traceback
 import redis
 import random
-from scrapbox_client import getDescriptions
 from utils import anyIn
 from discord.ext import commands
 
@@ -50,8 +49,7 @@ async def parse_message(message):
         logs = [log async for log in message.channel.history() if log.author.bot]
         await message.channel.delete_messages(logs)
         return await message.channel.send(f'{message.author.mention} botなんていなかった！')
-    msg = random.choice(getDescriptions('squidgirl', 'reply'))
-    await message.channel.send(f'{message.author.mention} + {msg}')
+    await message.channel.send(f'{message.author.mention} + なーに？')
 
 
 async def emergency(message):
