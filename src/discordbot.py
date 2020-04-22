@@ -30,64 +30,72 @@ async def on_message(message):
 
 
 async def parse_message(message):
-    if str(bot.user.id) in message.content:
-        args = message.content.split()
-        if len(args) == 3 and str(bot.user.id) in args[0] and args[1] == '教えて':
-            key = f'{message.guild.id}:{args[2]}'
-            if r.exists(key):
-                msg = f'{args[2]} は {list(r.smembers(key))[0].decode()} だよ！'
-            else:
-                msg = 'それは知らないよ！'
-        elif len(args) == 4 and str(bot.user.id) in args[0] and args[1] == '覚えて':
-            key = f'{message.guild.id}:{args[2]}'
-            if r.exists(key):
-                old = list(r.smembers(key))[0].decode()
-                r.sadd(key, args[3])
-                r.sadd(str(message.guild.id), args[2])
-                msg = f'{args[2]} は {old} じゃなかったっけ？\n{args[3]} で覚え直したよ！'
-            else:
-                r.sadd(key, args[3])
-                r.sadd(str(message.guild.id), args[2])
-                msg = f'{args[2]} は {args[3]}、覚えた！'
-        elif anyIn(message.content, ['ふとん', '布団']):
-            msg = await sleep(bot, message)
-        elif anyIn(message.content, ['黒歴史']):
-            logs = [log async for log in message.channel.history() if log.author == message.author]
-            await message.channel.delete_messages(logs)
-            msg = 'は何も言ってない、いいね？'
-        elif anyIn(message.content, ['バルス']):
-            logs = [log async for log in message.channel.history() if log.author.bot]
-            await message.channel.delete_messages(logs)
-            msg = 'botなんていなかった！'
-        else:
-            msg = random.choice(getDescriptions('squidgirl', 'reply'))
-        mention = str(message.author.mention) + ' '
-        await message.channel.send(mention + msg)
+    if str(bot.user.id) not in message.content:
+        return
+    args = message.content.split()
+    if len(args) in [3, 4]:
+        return await database(message, args)
+    if anyIn(message.content, ['ふとん', '布団']):
+        return await sleep(bot, message)
+    if anyIn(message.content, ['黒歴史']):
+        logs = [log async for log in message.channel.history() if log.author == message.author]
+        await message.channel.delete_messages(logs)
+        return await message.channel.send(f'{message.author.mention} + は何も言ってない、いいね？')
+    if anyIn(message.content, ['バルス']):
+        logs = [log async for log in message.channel.history() if log.author.bot]
+        await message.channel.delete_messages(logs)
+        return await message.channel.send(f'{message.author.mention} botなんていなかった！')
+    msg = random.choice(getDescriptions('squidgirl', 'reply'))
+    await message.channel.send(f'{message.author.mention} + {msg}')
 
 
-async def on_member_update(before, after):
-    if before.id == ID_USER_KUMASAN:
-        target_channel = bot.get_channel(ID_CATEGORY_EMERGENCY)
-        target_role = bot.get_guild(ID_GUILD_IKATODON).default_role
-        if after.status is discord.Status.offline:
-            await target_channel.set_permissions(target_role, read_messages=True)
-        elif after.status is discord.Status.online:
-            await target_channel.set_permissions(target_role, read_messages=False)
+async def database(message, args):
+    if str(bot.user.id) not in args[0]:
+        return
+    if len(args) == 3:
+        await oshiete(message, args)
+        return
+    if len(args) == 4:
+        await oboete(message, args)
+
+
+async def oshiete(message, args):
+    if args[1] != '教えて':
+        return
+    key = f'{message.guild.id}:{args[2]}'
+    if r.exists(key):
+        msg = f'{args[2]} は {list(r.smembers(key))[0].decode()} だよ！'
+    else:
+        msg = 'それは知らないよ！'
+    await message.channel.send(f'{message.author.mention} {msg}')
+
+
+async def oboete(message, args):
+    if args[1] != '覚えて':
+        return
+    key = f'{message.guild.id}:{args[2]}'
+    if r.exists(key):
+        old = list(r.smembers(key))[0].decode()
+        r.sadd(key, args[3])
+        r.sadd(str(message.guild.id), args[2])
+        msg = f'{args[2]} は {old} じゃなかったっけ？\n{args[3]} で覚え直したよ！'
+    else:
+        r.sadd(key, args[3])
+        r.sadd(str(message.guild.id), args[2])
+        msg = f'{args[2]} は {args[3]}、覚えた！'
+    await message.channel.send(f'{message.author.mention} {msg}')
 
 
 async def sleep(client, message):
     afk = message.guild.afk_channel
     vc = message.author.voice.channel
     if not afk:
-        return 'おふとんはどこ？'
+        return await message.channel.send(f'{message.author.mention} おふとんはどこ？')
     if not vc:
-        return 'ボイスチャンネルに入ってね！'
-    mentions = ''
+        return await message.channel.send(f'{message.author.mention} ボイスチャンネルに入ってね！')
     for member in vc.members:
         await member.move_to(afk)
-        if member != message.author:
-            mentions = mentions + member.mention + ' '
-    return f'{mentions}\nおやすみなさい！'
+    await message.channel.send('おやすみなさい！')
 
 
 bot.run(os.environ['DISCORD_BOT_TOKEN'])
