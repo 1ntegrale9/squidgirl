@@ -23,6 +23,8 @@ async def on_message(message):
     try:
         if message.author.bot:
             return
+        if message.guild.id != ID_GUILD_IKATODON:
+            return
         await parse_message(message)
     except Exception as e:
         ch_error = bot.get_channel(ID_CHANNEL_ERROR)
