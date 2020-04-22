@@ -16,6 +16,8 @@ ID_CHANNEL_LOGIN = 502906433914798093
 ID_CHANNEL_ERROR = 502906713545113642
 ID_USER_KUMASAN = 358698798266056707
 
+splatoon_wiki = 'https://mntone.minibird.jp/splw/%E3%83%A1%E3%82%A4%E3%83%B3%E3%83%9A%E3%83%BC%E3%82%B8'
+
 
 @bot.event
 async def on_message(message):
