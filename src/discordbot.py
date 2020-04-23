@@ -28,6 +28,8 @@ async def on_message(message):
     try:
         if message.author.bot:
             return
+        if not message.content:
+            return
         await parse_message(message)
         await bot.process_commands(message)
     except Exception as e:
@@ -41,8 +43,6 @@ async def parse_message(message):
         return
     if message.channel.category_id == ID_CATEGORY_EMERGENCY:
         await emergency(message)
-    if not message.content:
-        return
     if str(bot.user.id) not in message.content:
         return
     args = message.content.split()
