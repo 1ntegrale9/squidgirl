@@ -1,1 +1,1 @@
-discordbot: python src/discordbot.py
+discordbot: python discordbot/main.py
