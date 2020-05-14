@@ -10,7 +10,7 @@ class General(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        await self.bot.get_channel(self.bot.id_channel_login).send(str(datetime.now()))
+        await self.bot.get_channel(self.bot.id_channel_system).send(str(datetime.now()))
 
     async def perse(self, message):
         if message.guild.id != self.bot.id_guild_ikatodon:
