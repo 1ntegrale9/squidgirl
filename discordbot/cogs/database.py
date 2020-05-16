@@ -10,7 +10,7 @@ class Database(commands.Cog):
         self.r = redis.from_url(os.environ['REDIS_URL'])
 
     async def database(self, message, args):
-        if str(self.bot.useself.r.id) not in args[0]:
+        if str(self.bot.user.id) not in args[0]:
             return
         if len(args) == 3:
             await self.oshiete(message, args)
