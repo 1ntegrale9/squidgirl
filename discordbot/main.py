@@ -6,7 +6,7 @@ if __name__ == '__main__':
     bot.id_user_kumasan = 358698798266056707
     bot.id_guild_ikatodon = 421485150984208386
     bot.id_category_emergency = 431454757626970113
-    bot.id_channel_system = 502837677108887582
+    bot.id_channel_system = 475642109370826773
     bot.load_extension('cogs.general')
     bot.load_extension('cogs.emergency')
     bot.load_extension('cogs.database')
