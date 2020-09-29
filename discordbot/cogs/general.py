@@ -1,7 +1,10 @@
 from discord.ext import commands
-from utils.utils import anyIn
 from datetime import datetime
 import traceback
+
+
+def anyin(list, elements):
+    return any(e in list for e in elements)
 
 
 class General(commands.Cog):
@@ -17,13 +20,13 @@ class General(commands.Cog):
             return
         if str(self.bot.user.id) not in message.content:
             return
-        if anyIn(message.content, ['ふとん', '布団']):
+        if anyin(message.content, ['ふとん', '布団']):
             return await self.sleep(self.bot, message)
-        if anyIn(message.content, ['黒歴史']):
+        if anyin(message.content, ['黒歴史']):
             logs = [log async for log in message.channel.history() if log.author == message.author]
             await message.channel.delete_messages(logs)
             return await message.channel.send(f'{message.author.mention} は何も言ってない、いいね？')
-        if anyIn(message.content, ['バルス']):
+        if anyin(message.content, ['バルス']):
             logs = [log async for log in message.channel.history() if log.author.bot]
             await message.channel.delete_messages(logs)
             return await message.channel.send(f'{message.author.mention} botなんていなかった！')
