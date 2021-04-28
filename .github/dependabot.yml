@@ -1,0 +1,23 @@
+version: 2
+updates:
+- package-ecosystem: pip
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "06:00"
+    timezone: Asia/Tokyo
+  open-pull-requests-limit: 99
+  ignore:
+  - dependency-name: discord-py
+    versions:
+    - 1.6.0
+    - 1.7.0
+  - dependency-name: pytest-flake8
+    versions:
+    - 1.0.7
+  - dependency-name: requests
+    versions:
+    - 2.25.1
+  - dependency-name: jishaku
+    versions:
+    - 1.20.0.220
