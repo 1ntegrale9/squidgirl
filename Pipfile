@@ -8,7 +8,7 @@ requests = "*"
 redis = "*"
 pytest-flake8 = "*"
 mastodon-py = "*"
-discord-py = "==1.5.*"
+discord-py = "==1.7.*"
 jishaku = "*"
 
 [dev-packages]
