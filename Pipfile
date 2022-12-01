@@ -8,10 +8,10 @@ requests = "*"
 redis = "*"
 pytest-flake8 = "*"
 mastodon-py = "*"
-discord-py = "==1.5.*"
+discord-py = "==1.7.3"
 jishaku = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.8"
+python_version = "3.9"
