@@ -1,6 +1,6 @@
-discord.py==1.7.3
-requests
+discord.py
+Daug==2023.12.9.1
+python-dotenv
 redis
 pytest-flake8
 mastodon-py
-jishaku

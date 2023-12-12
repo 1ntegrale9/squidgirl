@@ -1,18 +1,31 @@
-import os
 import discord
 from discord.ext import commands
+from constants import TOKEN
+
+extensions = (
+    'auto_room',
+    'functions',
+    'instant_room',
+)
+
+
+class MyBot(commands.Bot):
+    def __init__(self):
+        super().__init__(
+            intents=discord.Intents.all(),
+            command_prefix=commands.when_mentioned_or('$ '),
+            help_command=None,
+        )
+
+    async def setup_hook(self):
+        for extension in extensions:
+            await self.load_extension(f'extensions.{extension}')
+        await self.tree.sync()
+
+
+def main():
+    MyBot().run(TOKEN)
+
 
 if __name__ == '__main__':
-    bot = commands.Bot(
-        command_prefix=commands.when_mentioned_or('s.'),
-        intents=discord.Intents.all(),
-    )
-    bot.id_user_kumasan = 358698798266056707
-    bot.id_guild_splatoon = 421485150984208386
-    bot.id_category_emergency = 431454757626970113
-    bot.id_channel_system = 475642109370826773
-    bot.load_extension('extensions.general')
-    bot.load_extension('extensions.emergency')
-    # bot.load_extension('extensions.database')
-    bot.load_extension('jishaku')
-    bot.run(os.getenv('DISCORD_BOT_TOKEN'))
+    main()
